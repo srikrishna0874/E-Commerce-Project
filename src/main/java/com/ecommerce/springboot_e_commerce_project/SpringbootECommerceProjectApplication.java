@@ -8,6 +8,7 @@ import org.springframework.context.ApplicationContext;
 public class SpringbootECommerceProjectApplication {
 
 	public static void main(String[] args) {
+		System.out.println("By Kamal");
 		SpringApplication.run(SpringbootECommerceProjectApplication.class, args);
 	}
 
