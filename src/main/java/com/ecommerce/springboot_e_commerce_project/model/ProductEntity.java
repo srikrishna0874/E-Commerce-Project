@@ -32,7 +32,7 @@ public class ProductEntity {
 
     private String productImageUrl;
     private Integer productStockQuantity;
-    private Double productRating;
+    //private Double productRating;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
