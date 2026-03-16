@@ -2,7 +2,6 @@ package com.ecommerce.springboot_e_commerce_project.service;
 
 import com.ecommerce.springboot_e_commerce_project.model.Product;
 import com.ecommerce.springboot_e_commerce_project.repo.ProductRepository;
-import jakarta.persistence.GeneratedValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

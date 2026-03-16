@@ -7,16 +7,21 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
-@Entity(name="categories")
+@Entity(name = "categories")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Category {
+    public Category(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int categoryId;
 
+    @Column(nullable = false)
     private String categoryName;
 
     private String categoryDescription;
