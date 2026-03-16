@@ -34,7 +34,7 @@ public class ProductController {
 
     @PostMapping("")
     public ResponseEntity<?> addProduct(@Valid @RequestBody Product product){
-        Product savedProduct = null;
+        Product savedProduct;
 
         try{
             savedProduct = productService.addProduct(product);
