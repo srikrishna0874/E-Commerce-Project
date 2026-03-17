@@ -34,11 +34,8 @@ public class ProductController {
 
     @PostMapping("")
     public ResponseEntity<?> addProduct(@Valid @RequestBody Product product){
-        Product savedProduct;
-
         try{
-            savedProduct = productService.addProduct(product);
-            return new ResponseEntity<>(savedProduct,HttpStatus.CREATED);
+            return new ResponseEntity<>(productService.addProduct(product),HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -62,5 +59,19 @@ public class ProductController {
             return new ResponseEntity<>("Product Deleted Successfully",HttpStatus.OK);
 
         return new ResponseEntity<>("Product Not Found",HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/category/{id}")
+    public ResponseEntity<Product> addProductWithCategory(@PathVariable("id") int categoryId, @Valid @RequestBody Product product){
+        try{
+            return productService.addProductWithCategory(product,categoryId);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("category/{id}")
+    public ResponseEntity<List<Product>> getAllProductsByCategory(@PathVariable("id") int categoryId){
+        return productService.getAllProductsByCategory(categoryId);
     }
 }
