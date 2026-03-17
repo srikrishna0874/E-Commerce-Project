@@ -1,0 +1,20 @@
+package com.ecommerce.springboot_e_commerce_project.dto;
+
+import lombok.*;
+
+import java.math.BigDecimal;
+
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class ProductDTO {
+    private int productId;
+    private String productName;
+    private String productDescription;
+    private BigDecimal productPrice;
+    private String productImageUrl;
+    private Integer productStockQuantity;
+    private CategoryDTO category;
+}
