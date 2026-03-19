@@ -13,6 +13,7 @@ public class CategoryMapper {
     public Category toEntity(CategoryDTO dto){
         Category category = new Category();
 
+        category.setCategoryId(dto.getCategoryId());
         category.setCategoryName(dto.getCategoryName());
         category.setCategoryDescription(dto.getCategoryDescription());
 
