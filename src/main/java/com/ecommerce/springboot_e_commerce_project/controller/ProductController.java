@@ -1,5 +1,6 @@
 package com.ecommerce.springboot_e_commerce_project.controller;
 
+import com.ecommerce.springboot_e_commerce_project.dto.ProductDTO;
 import com.ecommerce.springboot_e_commerce_project.model.Product;
 import com.ecommerce.springboot_e_commerce_project.service.ProductService;
 import jakarta.validation.Valid;
@@ -18,37 +19,18 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("")
-    public ResponseEntity<List<Product>> getProducts(){
+    public ResponseEntity<List<ProductDTO>> getProducts(){
         return new ResponseEntity<>(productService.getProducts(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProduct(@PathVariable int id){
-        Product p = productService.getProductById(id);
-        System.out.println(p.getProductId());
-        if(p.getProductId() > 0){
-            return new ResponseEntity<>(productService.getProductById(id),HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @PostMapping("")
-    public ResponseEntity<?> addProduct(@Valid @RequestBody Product product){
-        try{
-            return new ResponseEntity<>(productService.addProduct(product),HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<ProductDTO> getProduct(@PathVariable int id){
+        return productService.getProductById(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable int id,@Valid @RequestBody Product product){
-        Product p = productService.updateProduct(id,product);
-
-        if(p.getProductId() == -1)
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-        return new ResponseEntity<>(p,HttpStatus.OK);
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable int id,@Valid @RequestBody ProductDTO productDTO){
+        return productService.updateProduct(id,productDTO);
     }
 
     @DeleteMapping("/{id}")
@@ -62,16 +44,17 @@ public class ProductController {
     }
 
     @PostMapping("/category/{id}")
-    public ResponseEntity<Product> addProductWithCategory(@PathVariable("id") int categoryId, @Valid @RequestBody Product product){
+    public ResponseEntity<ProductDTO> addProductWithCategory(@PathVariable("id") int categoryId, @Valid @RequestBody ProductDTO productDTO){
         try{
-            return productService.addProductWithCategory(product,categoryId);
+            return productService.addProductWithCategory(productDTO,categoryId);
         } catch (Exception e) {
+            System.out.println(e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("category/{id}")
-    public ResponseEntity<List<Product>> getAllProductsByCategory(@PathVariable("id") int categoryId){
+    public ResponseEntity<List<ProductDTO>> getAllProductsByCategory(@PathVariable("id") int categoryId){
         return productService.getAllProductsByCategory(categoryId);
     }
 }

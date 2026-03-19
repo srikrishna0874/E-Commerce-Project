@@ -13,5 +13,4 @@ public class SpringbootECommerceProjectApplication {
 		SpringApplication.run(SpringbootECommerceProjectApplication.class, args);
 
 	}
-
 }
