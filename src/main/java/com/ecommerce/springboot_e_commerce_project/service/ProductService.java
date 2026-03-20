@@ -8,6 +8,8 @@ import com.ecommerce.springboot_e_commerce_project.repo.CategoryRepository;
 import com.ecommerce.springboot_e_commerce_project.repo.ProductRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -46,7 +48,7 @@ public class ProductService {
 
     public ResponseEntity<ProductDTO> updateProduct(int id, ProductDTO product) {
         Product existingProduct = productRepo.findById(id).orElse(new Product(-1));
-
+        Category category = categoryRepo.getById(product.getCategoryId());
         if(existingProduct.getProductId() == -1) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         existingProduct.setProductName(product.getProductName());
@@ -54,6 +56,7 @@ public class ProductService {
         existingProduct.setProductPrice(product.getProductPrice());
         existingProduct.setProductImageUrl(product.getProductImageUrl());
         existingProduct.setProductStockQuantity(product.getProductStockQuantity());
+        existingProduct.setCategory(category);
 
         productRepo.save(existingProduct);
         return new ResponseEntity<>(productMapper.toDTO(existingProduct),HttpStatus.OK);
@@ -72,6 +75,7 @@ public class ProductService {
     public ResponseEntity<ProductDTO> addProductWithCategory(@Valid ProductDTO productDTO, int categoryId) {
         productDTO.setCategoryId((categoryId));
         Product product = productMapper.toEntity(productDTO);
+
         Category category = categoryRepo.findById(categoryId).orElse(new Category(-1));
 //        System.out.println(category.getCategoryId());
 
@@ -97,5 +101,13 @@ public class ProductService {
         }
 
         return new ResponseEntity<>(productDTOS,HttpStatus.OK);
+    }
+
+    public ResponseEntity<Page<ProductDTO>> getProductsByPage(Pageable pageable) {
+        Page<Product> productPage = productRepo.findAll(pageable);
+
+        Page<ProductDTO> dtoPage = productPage.map(product -> productMapper.toDTO(product));
+
+        return new ResponseEntity<>(dtoPage,HttpStatus.OK);
     }
 }
