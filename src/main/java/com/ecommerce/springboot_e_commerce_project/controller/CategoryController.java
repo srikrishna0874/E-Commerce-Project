@@ -1,5 +1,6 @@
 package com.ecommerce.springboot_e_commerce_project.controller;
 
+import com.ecommerce.springboot_e_commerce_project.dto.CategoryDTO;
 import com.ecommerce.springboot_e_commerce_project.model.Category;
 import com.ecommerce.springboot_e_commerce_project.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,10 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping("")
-    public ResponseEntity<Category> addCategory(@RequestBody Category category) {
+    public ResponseEntity<CategoryDTO> addCategory(@RequestBody CategoryDTO categoryDTO) {
         try {
             System.out.println("Inserting new category");
-            return new ResponseEntity<>(categoryService.addCategory(category), HttpStatus.CREATED);
+            return new ResponseEntity<>(categoryService.addCategory(categoryDTO), HttpStatus.CREATED);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -29,14 +30,14 @@ public class CategoryController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Category>> getCategories() {
+    public ResponseEntity<List<CategoryDTO>> getCategories() {
         return new ResponseEntity<>(categoryService.getCategories(), HttpStatus.OK);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable("id") int categoryId) {
+    public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable("id") int categoryId) {
         try {
-            Category category = categoryService.getCategoryById(categoryId);
+            CategoryDTO category = categoryService.getCategoryById(categoryId);
             if (category.getCategoryId() == -1) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
@@ -48,13 +49,13 @@ public class CategoryController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Category> updateCategory(@RequestBody Category category, @PathVariable("id") int categoryId) {
+    public ResponseEntity<CategoryDTO> updateCategory(@RequestBody CategoryDTO categoryDTO, @PathVariable("id") int categoryId) {
         try {
-            Category updatedCategory = categoryService.updateCategory(categoryId, category);
-            if (updatedCategory.getCategoryId() == -1) {
+            CategoryDTO updatedCategoryDto = categoryService.updateCategory(categoryId, categoryDTO);
+            if (updatedCategoryDto.getCategoryId() == -1) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<>(category, HttpStatus.OK);
+            return new ResponseEntity<>(updatedCategoryDto, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
