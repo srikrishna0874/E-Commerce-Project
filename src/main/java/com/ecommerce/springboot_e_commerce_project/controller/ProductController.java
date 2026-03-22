@@ -1,10 +1,8 @@
 package com.ecommerce.springboot_e_commerce_project.controller;
 
 import com.ecommerce.springboot_e_commerce_project.dto.ProductDTO;
-import com.ecommerce.springboot_e_commerce_project.model.Product;
 import com.ecommerce.springboot_e_commerce_project.service.ProductService;
 import jakarta.validation.Valid;
-import org.hibernate.sql.ast.tree.select.SortSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
