@@ -1,10 +1,8 @@
 package com.ecommerce.springboot_e_commerce_project.controller;
 
 import com.ecommerce.springboot_e_commerce_project.dto.ProductDTO;
-import com.ecommerce.springboot_e_commerce_project.model.Product;
 import com.ecommerce.springboot_e_commerce_project.service.ProductService;
 import jakarta.validation.Valid;
-import org.hibernate.sql.ast.tree.select.SortSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,29 +27,29 @@ public class ProductController {
 //    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> getProduct(@PathVariable int id){
+    public ResponseEntity<ProductDTO> getProduct(@PathVariable int id) {
         return productService.getProductById(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable int id,@Valid @RequestBody ProductDTO productDTO){
-        return productService.updateProduct(id,productDTO);
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable int id, @Valid @RequestBody ProductDTO productDTO) {
+        return productService.updateProduct(id, productDTO);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProduct(@PathVariable int id){
+    public ResponseEntity<String> deleteProduct(@PathVariable int id) {
         Boolean deletedSuccessfully = productService.deleteProduct(id);
 
-        if(deletedSuccessfully)
-            return new ResponseEntity<>("Product Deleted Successfully",HttpStatus.OK);
+        if (deletedSuccessfully)
+            return new ResponseEntity<>("Product Deleted Successfully", HttpStatus.OK);
 
-        return new ResponseEntity<>("Product Not Found",HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Product Not Found", HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/category/{id}")
-    public ResponseEntity<ProductDTO> addProductWithCategory(@PathVariable("id") int categoryId, @RequestBody ProductDTO productDTO){
-        try{
-            return productService.addProductWithCategory(productDTO,categoryId);
+    public ResponseEntity<ProductDTO> addProductWithCategory(@PathVariable("id") int categoryId, @RequestBody ProductDTO productDTO) {
+        try {
+            return productService.addProductWithCategory(productDTO, categoryId);
         } catch (Exception e) {
             System.out.println(e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -59,7 +57,7 @@ public class ProductController {
     }
 
     @GetMapping("category/{id}")
-    public ResponseEntity<List<ProductDTO>> getAllProductsByCategory(@PathVariable("id") int categoryId){
+    public ResponseEntity<List<ProductDTO>> getAllProductsByCategory(@PathVariable("id") int categoryId) {
         return productService.getAllProductsByCategory(categoryId);
     }
 
@@ -69,10 +67,10 @@ public class ProductController {
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "productId") String sortBy,
             @RequestParam(defaultValue = "true") boolean ascending
-    ){
-        size = Math.min(size,5);
+    ) {
+        size = Math.min(size, 5);
         Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
-        Pageable pageable = PageRequest.of(page,size, sort);
+        Pageable pageable = PageRequest.of(page, size, sort);
         return productService.getProductsByPage(pageable);
     }
 }
