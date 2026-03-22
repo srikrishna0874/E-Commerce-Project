@@ -33,4 +33,7 @@ public class Cart {
 
     private BigDecimal totalPrice;
 
+    @Enumerated(value = EnumType.STRING)
+    private CartStatus cartStatus;
+
 }
