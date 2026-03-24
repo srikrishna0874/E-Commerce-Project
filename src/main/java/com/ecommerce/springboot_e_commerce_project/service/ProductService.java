@@ -31,7 +31,7 @@ public class ProductService {
         List<Product> products = productRepo.findAll();
         List<ProductDTO> productDTOS = new ArrayList<>();
 
-        for(Product product : products){
+        for (Product product : products) {
             productDTOS.add(productMapper.toDTO(product));
         }
 
@@ -42,14 +42,15 @@ public class ProductService {
     public ResponseEntity<ProductDTO> getProductById(int id) {
         Product product = productRepo.findById(id).orElse(new Product(-1));
 //        System.out.println("In Service " +product.getProductId());
-        if(product.getProductId() == -1) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(productMapper.toDTO(product),HttpStatus.OK);
+        if (product.getProductId() == -1) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(productMapper.toDTO(product), HttpStatus.OK);
     }
 
     public ResponseEntity<ProductDTO> updateProduct(int id, ProductDTO product) {
         Product existingProduct = productRepo.findById(id).orElse(new Product(-1));
-        Category category = categoryRepo.getById(product.getCategoryId());
-        if(existingProduct.getProductId() == -1) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Category category = categoryRepo.findById(product.getCategoryId()).orElse(new Category(-1));
+        if (existingProduct.getProductId() == -1 || category.getCategoryId() == -1)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         existingProduct.setProductName(product.getProductName());
         existingProduct.setProductDescription(product.getProductDescription());
@@ -59,13 +60,13 @@ public class ProductService {
         existingProduct.setCategory(category);
 
         productRepo.save(existingProduct);
-        return new ResponseEntity<>(productMapper.toDTO(existingProduct),HttpStatus.OK);
+        return new ResponseEntity<>(productMapper.toDTO(existingProduct), HttpStatus.OK);
     }
 
     public Boolean deleteProduct(int id) {
         Product p = productRepo.findById(id).orElse(new Product(-1));
 
-        if(p.getProductId() != -1){
+        if (p.getProductId() != -1) {
             productRepo.delete(p);
             return true;
         }
@@ -79,28 +80,28 @@ public class ProductService {
         Category category = categoryRepo.findById(categoryId).orElse(new Category(-1));
 //        System.out.println(category.getCategoryId());
 
-        if(category.getCategoryId() == -1){
+        if (category.getCategoryId() == -1) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         product.setCategory(category);
         Product savedProduct = productRepo.save(product);
-        return new ResponseEntity<>(productMapper.toDTO(savedProduct),HttpStatus.CREATED);
+        return new ResponseEntity<>(productMapper.toDTO(savedProduct), HttpStatus.CREATED);
     }
 
     public ResponseEntity<List<ProductDTO>> getAllProductsByCategory(int categoryId) {
         Category category = categoryRepo.findById(categoryId).orElse(new Category(-1));
 
-        if(category.getCategoryId() == -1){
+        if (category.getCategoryId() == -1) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         List<Product> products = productRepo.findAllByCategory(category);
         List<ProductDTO> productDTOS = new ArrayList<>();
 
-        for(Product product: products){
+        for (Product product : products) {
             productDTOS.add(productMapper.toDTO(product));
         }
 
-        return new ResponseEntity<>(productDTOS,HttpStatus.OK);
+        return new ResponseEntity<>(productDTOS, HttpStatus.OK);
     }
 
     public ResponseEntity<Page<ProductDTO>> getProductsByPage(Pageable pageable) {
@@ -108,6 +109,6 @@ public class ProductService {
 
         Page<ProductDTO> dtoPage = productPage.map(product -> productMapper.toDTO(product));
 
-        return new ResponseEntity<>(dtoPage,HttpStatus.OK);
+        return new ResponseEntity<>(dtoPage, HttpStatus.OK);
     }
 }
