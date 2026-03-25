@@ -1,5 +1,6 @@
 package com.ecommerce.springboot_e_commerce_project.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,16 +24,19 @@ public class CartItem {
     @Column(name = "cart_item_id")
     private int cartItemId;
 
-    @ManyToOne
-    @JoinColumn(name = "cartId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_id")
+    @JsonBackReference
     private Cart cart;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @Column(nullable = false)
     private Integer quantity;
 
+    private BigDecimal price;
     private BigDecimal totalPrice;
 
     @CreationTimestamp
