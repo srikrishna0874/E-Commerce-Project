@@ -4,14 +4,11 @@ import com.ecommerce.springboot_e_commerce_project.dto.AddToCartRequest;
 import com.ecommerce.springboot_e_commerce_project.dto.CartItemDTO;
 import com.ecommerce.springboot_e_commerce_project.dto.CartResponseDTO;
 import com.ecommerce.springboot_e_commerce_project.dto.UpdateCartRequest;
-import com.ecommerce.springboot_e_commerce_project.model.CartItem;
 import com.ecommerce.springboot_e_commerce_project.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/cart")
@@ -41,7 +38,7 @@ public class CartController {
     public ResponseEntity<CartItemDTO> updateCart(@PathVariable int cartId, @PathVariable int productId, @RequestBody UpdateCartRequest request){
         int quantity = request.getQuantity();
 
-        CartItemDTO itemDTO = cartService.updateCart(cartId,productId,quantity);
+        CartItemDTO itemDTO = cartService.updateCartQuantity(cartId,productId,quantity);
 
         return new ResponseEntity<>(itemDTO,HttpStatus.OK);
     }

@@ -3,6 +3,7 @@ package com.ecommerce.springboot_e_commerce_project.controller;
 import com.ecommerce.springboot_e_commerce_project.dto.CategoryDTO;
 import com.ecommerce.springboot_e_commerce_project.model.Category;
 import com.ecommerce.springboot_e_commerce_project.service.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping("")
-    public ResponseEntity<CategoryDTO> addCategory(@RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<CategoryDTO> addCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
         try {
             System.out.println("Inserting new category");
             return new ResponseEntity<>(categoryService.addCategory(categoryDTO), HttpStatus.CREATED);
