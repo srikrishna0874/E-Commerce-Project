@@ -1,5 +1,6 @@
 package com.ecommerce.springboot_e_commerce_project.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,7 +38,7 @@ public class Order {
 
     private Integer totalItems;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
-    private List<OrderItems> orderItems;
-
+    @JsonManagedReference
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItems;
 }

@@ -11,7 +11,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CategoryDTO {
+
     private int categoryId;
     private String categoryName;
     private String categoryDescription;
+
+    public CategoryDTO(String categoryName, String categoryDescription) {
+        this.categoryName = categoryName;
+        this.categoryDescription = categoryDescription;
+    }
+
 }

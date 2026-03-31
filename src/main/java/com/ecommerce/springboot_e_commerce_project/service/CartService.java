@@ -6,6 +6,7 @@ import com.ecommerce.springboot_e_commerce_project.mapper.CartItemMapper;
 import com.ecommerce.springboot_e_commerce_project.mapper.CartMapper;
 import com.ecommerce.springboot_e_commerce_project.model.Cart;
 import com.ecommerce.springboot_e_commerce_project.model.CartItem;
+import com.ecommerce.springboot_e_commerce_project.model.CartStatus;
 import com.ecommerce.springboot_e_commerce_project.model.Product;
 import com.ecommerce.springboot_e_commerce_project.repo.CartItemRepository;
 import com.ecommerce.springboot_e_commerce_project.repo.CartRepository;
@@ -16,8 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -73,7 +72,7 @@ public class CartService {
         }
     }
 
-    public CartItemDTO updateCart(int cartId, int productId, int quantity) {
+    public CartItemDTO updateCartQuantity(int cartId, int productId, int quantity) {
 
         Cart cart = cartRepo.findById(cartId).orElseThrow(() -> new RuntimeException("Cart not exists"));
         Product product = productRepo.findById(productId).orElseThrow(() -> new RuntimeException("Product not exists"));
@@ -106,6 +105,8 @@ public class CartService {
 
     public void updateCartTotals(Cart cart){
         BigDecimal totalPrice = BigDecimal.ZERO;
+
+        System.out.println("Cart items size is:" + cart.getCartItems());
 
         for(CartItem item: cart.getCartItems()){
             totalPrice = totalPrice.add(item.getTotalPrice());

@@ -22,7 +22,7 @@ public class CategoryService {
     private CategoryMapper categoryMapper;
 
 
-    public CategoryDTO addCategory(@Valid CategoryDTO categoryDTO) {
+    public CategoryDTO addCategory(CategoryDTO categoryDTO) {
         Category savedCategory = categoryRepo.save(categoryMapper.toEntity(categoryDTO));
         return categoryMapper.toDTO(savedCategory);
     }
